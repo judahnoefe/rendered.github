@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rendered - Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Rendered</h1>
+    <nav>
+        <ul>
+            <li><a href="home.html">Home</a></li>
+            <li><a href="artists.html">Artists</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="main">
+    <div class="main-text">
+
+        <h2>Welcome to Rendered!</h2>
+        <p>Discover and celebrate art from around the world!
+            Rendered is a digital space dedicated to showcasing the works of talented digital artists worldwide.
+            Whether you're an artist looking to share your creations or an art lover seeking inspiration,
+            our platform connects you with a diverse range of digital masterpieces.
+        </p>
+    </div>
+</section>
+
+<section id="search-filter">
+    <div class="search-container">
+        <h2>Search for Artists</h2>
+        <div class="search-bar-wrapper">
+            <input type="text" id="search-bar" placeholder="Search by name..." onclick="toggleDropdown()">
+            <button class="search-btn" onclick="filterArtists()">Search</button>
+        </div>
+        <div id="dropdown-filters" class="hidden">
+            <div class="filter-group">
+                <p>Medium:</p>
+                <label><input type="checkbox" name="medium" value="digital-painting"> Digital Painting</label>
+                <label><input type="checkbox" name="medium" value="pixel-art"> Pixel Art</label>
+                <label><input type="checkbox" name="medium" value="vector-art"> Vector Art</label>
+                <label><input type="checkbox" name="medium" value="3d-modeling"> 3D Modeling</label>
+            </div>
+            <div class="filter-group">
+                <p>Genre:</p>
+                <label><input type="checkbox" name="genre" value="realism"> Realism</label>
+                <label><input type="checkbox" name="genre" value="minimalism"> Minimalism</label>
+                <label><input type="checkbox" name="genre" value="fantasy"> Fantasy</label>
+                <label><input type="checkbox" name="genre" value="sci-fi"> Sci-Fi</label>
+                <label><input type="checkbox" name="genre" value="anime"> Anime</label>
+                <label><input type="checkbox" name="genre" value="concept-art"> Concept Art</label>
+                <label><input type="checkbox" name="genre" value="cartoon"> Cartoon</label>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="featured-artists">
+    <h2>Featured Artists</h2>
+    <div class="artist-grid">
+        <a href="artist1.html" class="artist-card" data-medium="digital-painting" data-genre="fantasy">
+            <img src="artist.png" alt="Artist 1">
+            <p>Artist 1</p>
+        </a>
+        <a href="artist2.html" class="artist-card" data-medium="vector-art" data-genre="minimalism">
+            <img src="artist.png" alt="Artist 2">
+            <p>Artist 2</p>
+        </a>
+        <a href="artist3.html" class="artist-card" data-medium="3d-modeling" data-genre="sci-fi">
+            <img src="artist.png" alt="Artist 3">
+            <p>Artist 3</p>
+        </a>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 Rendered. All rights reserved.</p>
+    <div class="socials">
+        <a href="https://www.facebook.com" target="_blank"><img src="facebook.png" alt="Facebook Icon"></a>
+        <a href="https://www.instagram.com" target="_blank"><img src="instagram.png" alt="Instagram Icon"></a>
+        <a href="https://www.x.com" target="_blank"><img src="twitter.png" alt="Twitter Icon"></a>
+    </div>
+</footer>
+
+<script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById("dropdown-filters");
+        dropdown.classList.toggle("hidden");
+    }
+
+    document.addEventListener("click", function(event) {
+        const dropdown = document.getElementById("dropdown-filters");
+        const searchBar = document.getElementById("search-bar");
+        if (!searchBar.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.add("hidden");
+        }
+    });
+
+    function filterArtists() {
+        const searchInput = document.getElementById("search-bar").value.toLowerCase();
+        const mediumFilters = Array.from(document.querySelectorAll('input[name="medium"]:checked')).map(input => input.value);
+        const genreFilters = Array.from(document.querySelectorAll('input[name="genre"]:checked')).map(input => input.value);
+
+        const artistCards = document.querySelectorAll('.artist-card');
+
+        artistCards.forEach(card => {
+            const artistName = card.querySelector('p').textContent.toLowerCase();
+            const artistMedium = card.getAttribute('data-medium');
+            const artistGenre = card.getAttribute('data-genre');
+
+            const matchesSearch = artistName.includes(searchInput);
+            const matchesMedium = mediumFilters.length === 0 || mediumFilters.includes(artistMedium);
+            const matchesGenre = genreFilters.length === 0 || genreFilters.includes(artistGenre);
+
+            if (matchesSearch && matchesMedium && matchesGenre) {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    }
+
+    let currentSlide = 0;
+
+    function moveSlide(direction) {
+        const track = document.querySelector('.carousel-track');
+        const totalSlides = document.querySelectorAll('.carousel-slide').length;
+
+        currentSlide += direction;
+
+        if (currentSlide < 0) currentSlide = totalSlides - 1;
+        if (currentSlide >= totalSlides) currentSlide = 0;
+
+        const slideWidth = document.querySelector('.carousel-slide').offsetWidth;
+        track.style.transform = `translateX(-${currentSlide * slideWidth}px)`;
+    }
+</script>
+
+</body>
+</html>
